@@ -1,0 +1,126 @@
+@use "@angular/material" as mat;
+@import "./fonts/fonts.scss";
+@include mat.core();
+
+$bright-navy-blue-palette: (
+  50: #f7f9ff,
+  100: #f1f3fb,
+  200: #e9ebf3,
+  300: #dadce4,
+  400: #b6b9c0,
+  500: #9799a0,
+  600: #6e7077,
+  700: #5b5d63,
+  800: #3c3e44,
+  900: #1c1d23,
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  ),
+);
+$gainsboro-palette: (
+  50: #ecfae9,
+  100: #d0f1c8,
+  200: #b0e7a5,
+  300: #8edc7f,
+  400: #71d461,
+  500: #54cc44,
+  600: #44bc3c,
+  700: #2aa732,
+  800: #009328,
+  900: #007014,
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: white,
+  ),
+);
+
+$rickmorty-primary: mat.define-palette($bright-navy-blue-palette, 700, 300, 900);
+$rickmorty-accent: mat.define-palette($gainsboro-palette, 300, 100, 500);
+
+$rickmorty-typography: mat.define-typography-config($font-family: "On Air",
+    $headline-1: mat.define-typography-level(24px, 32px, 400, $letter-spacing: normal),
+    $headline-2: mat.define-typography-level(24px, 30px, 300, $letter-spacing: normal),
+    // $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+    // $headline-4: mat.define-typography-level(34px, 40px, 400),
+    $headline-5: mat.define-typography-level(18px, 26px, 400, $letter-spacing: normal),
+    // h1
+    $headline-6: mat.define-typography-level(16px, 24px, 400, $letter-spacing: normal),
+    // h2
+    $subtitle-1: mat.define-typography-level("On Air",
+      14px,
+      20px,
+      400,
+      $letter-spacing: normal),
+    // h3
+    // $subtitle-2: mat.define-typography-level(56px, 32px, 400),
+    $body-1: mat.define-typography-level(14px,
+      20px,
+      400,
+      $letter-spacing: normal),
+    $body-2: mat.define-typography-level(12px, 20px, 400, $letter-spacing: normal),
+    $caption: mat.define-typography-level(14px, 20px, 400, $letter-spacing: normal),
+    $button: mat.define-typography-level(14px, 20px, 400, $letter-spacing: normal),
+  );
+
+$rickmorty-theme: mat.define-light-theme((color: (
+        primary: $rickmorty-primary,
+        accent: $rickmorty-accent
+      ),
+      typography: $rickmorty-typography,
+    ));
+
+@include mat.typography-hierarchy($rickmorty-typography);
+@include mat.all-component-themes($rickmorty-theme);
+
+:root {
+  --white: #ffffff;
+  --blue: #019df4;
+  --blue-info: #036fab;
+  --dark-blue: #0b2739;
+  --gray1: #f5f5f5;
+  --gray2: #d3d4d3;
+  --gray3: #b6b7b7;
+  --gray4: #86888c;
+  --gray5: #50535a;
+  --red: #e02c05;
+  --green: #5cb615;
+
+  --white-rgb: 255, 255, 255;
+  --blue-rgb: 1, 157, 244;
+  --dark-blue-rgb: 11, 39, 57;
+}
+
+html,
+body {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
