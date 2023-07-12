@@ -6,7 +6,14 @@
     <mat-sidenav-content>
       <app-header (darkModeSwitched)="switchMode($event)" (sidenavToggle)="sidenav.toggle()"></app-header>
       <main>
-        <router-outlet></router-outlet>
+        <section fxLayout="column" fxFlexAlign="stretch"> 
+          <div fxLayout="row wrap" fxLayoutAlign="center center"> 
+              <img class="logo" src="assets/images/Logo_Rick_and_Morty.svg" alt="Title Rick & Morty"> 
+          </div>
+      
+          <router-outlet></router-outlet>
+      </section>
+        
       </main>
     </mat-sidenav-content>
   </mat-sidenav-container>

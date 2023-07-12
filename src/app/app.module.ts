@@ -13,10 +13,12 @@ import { MaterialModule } from './material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RoutingModule } from './routing/routing.module';
 import { LayoutComponent } from './layout/layout.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DimensionsComponent } from './components/dimensions/dimensions.component';
+import { LocationsComponent } from './components/locations/locations.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { HttpClientModule } from '@angular/common/http';
     LayoutComponent,
     HomeComponent,
     HeaderComponent,
-    SidenavListComponent
+    SidenavListComponent,
+    DimensionsComponent,
+    LocationsComponent
   ],
   imports: [
     BrowserModule,
