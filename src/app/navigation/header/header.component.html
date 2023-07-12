@@ -5,7 +5,9 @@
         </button>
     </div>
     <div>
-        <a routerLink="/home">Rick & Morty</a>
+        <a routerLink="/home">
+            <img class="logo" src="assets/images/icon.svg" alt="Logo Rick & Morty">
+        </a>
     </div>
     <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
         <ul fxLayout fxLayoutGap="15px" class="navigation-items">
@@ -19,5 +21,10 @@
                 <a routerLink="/episodes">Episodes</a>
             </li>
         </ul>
+    </div>
+    <div >
+        <button mat-icon-button (click)="toggleDarkMode()">
+            <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          </button>
     </div>
   </mat-toolbar>

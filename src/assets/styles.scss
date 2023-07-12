@@ -2,7 +2,8 @@
 @import "./fonts/fonts.scss";
 @include mat.core();
 
-$bright-navy-blue-palette: (
+
+$palete-ricky-morty-light: (
   50: #f7f9ff,
   100: #f1f3fb,
   200: #e9ebf3,
@@ -17,7 +18,7 @@ $bright-navy-blue-palette: (
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
     300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
+    400: rgba(rgb(0, 0, 0), 0.87),
     500: white,
     600: white,
     700: white,
@@ -44,7 +45,7 @@ $gainsboro-palette: (
     100: rgba(black, 0.87),
     200: rgba(black, 0.87),
     300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
+    400: rgba(rgb(0, 0, 0), 0.87),
     500: white,
     600: white,
     700: white,
@@ -57,12 +58,42 @@ $gainsboro-palette: (
   ),
 );
 
-$rickmorty-primary: mat.define-palette($bright-navy-blue-palette, 700, 300, 900);
+$pallete-ricky-morty-dark: (
+  50: #f7f9ff,
+  100: #f1f3fb,
+  200: #e9ebf3,
+  300: #5060b0,
+  400: #465472,
+  500: #9799a0,
+  600: #6e7077,
+  700: #272321,
+  800: #3c3e44,
+  900: #235aa0,
+  contrast: (50: rgba(black, 0.87),
+    100: #79e648,
+    200: #79e648,
+    300: #79e648,
+    400: #79e648,
+    500: #79e648,
+    600: #79e648,
+    700: #79e648,
+    800: #79e648,
+    900: #79e648,
+    A100: #79e648,
+    A200: #79e648,
+    A400: #79e648,
+    A700: #79e648
+  ),
+  
+);
+
+$rickmorty-primary-dark: mat.define-palette($pallete-ricky-morty-dark, 700, 300, 900);
+$rickmorty-primary: mat.define-palette($palete-ricky-morty-light, 700, 300, 900);
 $rickmorty-accent: mat.define-palette($gainsboro-palette, 300, 100, 500);
 
 $rickmorty-typography: mat.define-typography-config($font-family: "On Air",
     $headline-1: mat.define-typography-level(24px, 32px, 400, $letter-spacing: normal),
-    $headline-2: mat.define-typography-level(24px, 30px, 300, $letter-spacing: normal),
+    $headline-2: mat.define-typography-level(24px, 30px, 400, $letter-spacing: normal),
     // $headline-3: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
     // $headline-4: mat.define-typography-level(34px, 40px, 400),
     $headline-5: mat.define-typography-level(18px, 26px, 400, $letter-spacing: normal),
@@ -85,7 +116,15 @@ $rickmorty-typography: mat.define-typography-config($font-family: "On Air",
     $button: mat.define-typography-level(14px, 20px, 400, $letter-spacing: normal),
   );
 
-$rickmorty-theme: mat.define-light-theme((color: (
+
+$rickmorty-theme-dark: mat.define-dark-theme((color: (
+        primary: $rickmorty-primary-dark,
+        accent: $rickmorty-accent
+      ),
+      typography: $rickmorty-typography
+    ));
+
+$rickmorty-theme-light: mat.define-light-theme((color: (
         primary: $rickmorty-primary,
         accent: $rickmorty-accent
       ),
@@ -93,7 +132,15 @@ $rickmorty-theme: mat.define-light-theme((color: (
     ));
 
 @include mat.typography-hierarchy($rickmorty-typography);
-@include mat.all-component-themes($rickmorty-theme);
+
+.theme-light {
+  @include mat.all-component-themes($rickmorty-theme-light);
+}
+
+.theme-dark {
+  @include mat.all-component-themes($rickmorty-theme-dark);
+  
+}
 
 :root {
   --white: #ffffff;
