@@ -19,6 +19,10 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
 import { HttpClientModule } from '@angular/common/http';
 import { DimensionsComponent } from './components/dimensions/dimensions.component';
 import { LocationsComponent } from './components/locations/locations.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducers } from './states/reducers';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,13 @@ import { LocationsComponent } from './components/locations/locations.component';
     MaterialModule,
     FlexLayoutModule,
     RoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      name: 'Rick and Morty App',
+      maxAge: 25
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
