@@ -10,6 +10,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ILocations } from '../../services/rickandmorty.interface';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { LoadLocationsAction } from '../../states/rickandmorty.actions';
+import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
 
 @Component({
   selector: 'app-locations',
@@ -17,43 +20,39 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./locations.component.scss'],
 })
 export class LocationsComponent implements OnInit, AfterViewChecked {
-  displayedColumns: string[] = ['id', 'name'];
+  displayedColumns: string[] = [ 'name', 'type', 'dimension', 'residents', 'characters'];
   dataSource: MatTableDataSource<ILocations> =
     new MatTableDataSource<ILocations>();
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  private pageSubscription!: Subscription;
-
+  
   lengthPaginator = 0;
   indexPage = 0;
 
   constructor(
-    private rickyAndMortyService: RickAndMortyService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
-    this.loadData();
-  }
+    this.store.dispatch(new LoadLocationsAction(1));
 
-  loadData(): void {
-    this.rickyAndMortyService.getLocations().subscribe((data) => {
-      this.dataSource.data = data.results;
-      this.paginator.length = data.info.count;
-      this.lengthPaginator = data.info.count;
-      this.indexPage = 0;
-    });
+    this.store
+      .select(fromRickMortySelector.getLocations)
+      .subscribe((locations) => {
+        const results = locations?.find((lct) => lct.show);
+        console.log("results", results)
+        this.dataSource.data = results?.results ?? [];
+        this.paginator.length = results?.info.count;
+        this.lengthPaginator = results?.info.count ?? 0;
+        this.indexPage = results?.page ? results?.page - 1 : 0;
+        this.cdr.detectChanges();
+      });
 
     this.paginator.page.subscribe((dataPaginator) => {
       let pageTemp = dataPaginator.pageIndex;
-
-      this.rickyAndMortyService.getLocations(pageTemp + 1).subscribe((data) => {
-        this.dataSource.data = data.results;
-        this.paginator.length = data.info.count;
-        this.lengthPaginator = data.info.count;
-        this.indexPage = pageTemp;
-      });
+      this.store.dispatch(new LoadLocationsAction(pageTemp + 1));
     });
   }
 

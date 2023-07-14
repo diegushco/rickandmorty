@@ -4,7 +4,9 @@ import { Action } from "@ngrx/store";
  * Type of actions
  */
 export enum RickMortyActionType {
-  SetLocations = "[Locations] Set locations of results from api"
+  SetLocations = "[Locations] Set locations of results from api",
+  LoadLocations = "[Locations] Load data",
+  LoadCharacters = "[Characters] Load data"
 }
 
  export class SetLocationsAction implements Action {
@@ -18,9 +20,32 @@ export enum RickMortyActionType {
   constructor(public payload: any) { }
 }
 
+export class LoadLocationsAction implements Action {
+
+    readonly type = RickMortyActionType.LoadLocations;
+  
+    /**
+     * Constructor
+     * @param payload
+     */
+    constructor(public payload: number) { }
+  }
+
+export class LoadCharactersAction implements Action {
+
+    readonly type = RickMortyActionType.LoadCharacters;
+ 
+    /**
+     * Constructor
+     * @param payload
+     */
+    constructor(public payload: number) { }
+  }
+
 /**
  * Export actions
  */
 export type Actions =
   | RickMortyActionType
-  | SetLocationsAction;
+  | SetLocationsAction
+  | LoadCharactersAction;

@@ -1,17 +1,20 @@
 
 import { RickMortyActionType } from "./rickandmorty.actions";
-import { ILocations } from '../services/rickandmorty.interface';
+import { IInfo, ILocations } from '../services/rickandmorty.interface';
 
-interface ILocationManage{
+export interface ILocationManage{
     url:string,
-    results:ILocations[]
+    results:ILocations[],
+    show:boolean,
+    info:IInfo,
+    page:number
 }
 
 /**
  * Model state
  */
 export interface DataState {
-  locations: ILocationManage | null;
+  locations: ILocationManage[] | null;
 }
 
 /**

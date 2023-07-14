@@ -7,16 +7,22 @@ import { IDataLocation } from './rickandmorty.interface';
   providedIn: 'root'
 })
 export class RickAndMortyService {
+
+  private apiUrl = 'https://rickandmortyapi.com/api';
   
   constructor(private http: HttpClient) {}
 
   getLocations(page?: number): Observable<IDataLocation>{
-    let url = 'https://rickandmortyapi.com/api/location';
+    let url = `${this.apiUrl}/location`;
     if (page) {
       url += `?page=${page}`;
     }
 
     return this.http.get<IDataLocation>(url);
+  }
+
+  getEndpoint(url: string): Observable<any> {
+    return this.http.get(url);
   }
 
 }   

@@ -23,6 +23,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './states/reducers';
+import { RickMortyEffects } from './states/rickandmorty.effects';
+import { CharactersComponent } from './components/characters/characters.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { reducers } from './states/reducers';
     HeaderComponent,
     SidenavListComponent,
     DimensionsComponent,
-    LocationsComponent
+    LocationsComponent,
+    CharactersComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,7 @@ import { reducers } from './states/reducers';
     RoutingModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([RickMortyEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Rick and Morty App',
       maxAge: 25
