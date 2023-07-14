@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IDataLocation } from './rickandmorty.interface';
+import { IDataEpisodes, IDataLocation } from './rickandmorty.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,15 @@ export class RickAndMortyService {
 
   getEndpoint(url: string): Observable<any> {
     return this.http.get(url);
+  }
+
+  getEpisodes(page?: number): Observable<IDataEpisodes>{
+    let url = `${this.apiUrl}/episode`;
+    if (page) {
+      url += `?page=${page}`;
+    }
+
+    return this.http.get<IDataEpisodes>(url);
   }
 
 }   

@@ -45,3 +45,18 @@ export interface IDataCharacters {
   info: IInfo;
   results: ICharacter[];
 }
+
+export interface IEpisode {
+  id: number;
+  name: string;
+  air_date: string;
+  episode: string;
+  characters: string[];
+  url: string;
+  created: string;
+}
+
+export interface IDataEpisodes {
+  info: IInfo;
+  results: IEpisode[];
+}

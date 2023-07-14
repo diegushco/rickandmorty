@@ -4,13 +4,14 @@ import { map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import {
   LoadLocationsAction,
   RickMortyActionType,
+  SetEpisodesAction,
   SetLocationsAction,
 } from './rickandmorty.actions';
 import { of, pipe } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromRickMortySelector from './rickandmorty.selectors';
 import { RickAndMortyService } from '../services/rickandmorty.service';
-import { ILocationManage } from './rickandmorty.reducer';
+import { IEpisodesManage, ILocationManage } from './rickandmorty.reducer';
 
 @Injectable()
 export class RickMortyEffects {
@@ -56,6 +57,47 @@ export class RickMortyEffects {
               };
               const tmpLocation = locationsStore.concat([dataLocation]);
               return of(new SetLocationsAction(tmpLocation));
+            })
+          );
+        }
+      })
+    )
+  );
+
+  loadEpisodes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RickMortyActionType.LoadEpisodes),
+      withLatestFrom(this.store.select(fromRickMortySelector.getEpisodes)),
+      switchMap(([action, episodes]) => {
+        const parametro: any = action;
+        let episodesStore = episodes || [];
+        const pageMatch = `page=${parametro.payload}`;
+        let episodesShow = episodes?.find((ep) =>
+          ep.url.includes(pageMatch)
+        );
+        if (episodesShow) {
+          episodesStore = episodesStore.map((obj) => {
+            if (obj.url === episodesShow?.url) {
+              return { ...obj, show: true };
+            }
+            return { ...obj, show: false };
+          });
+          return of(new SetEpisodesAction(episodesStore));
+        } else {
+          return this.rickAndMortyService.getEpisodes(parametro.payload).pipe(
+            switchMap((result) => {
+              episodesStore = episodesStore.map((obj) => {
+                return { ...obj, show: false };
+              });
+              const dataLocation: IEpisodesManage = {
+                results: result.results,
+                show: true,
+                url: this.urlLocations + pageMatch,
+                info: result.info,
+                page: parametro.payload,
+              };
+              const tmpLocation = episodesStore.concat([dataLocation]);
+              return of(new SetEpisodesAction(tmpLocation));
             })
           );
         }

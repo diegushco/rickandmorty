@@ -25,6 +25,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './states/reducers';
 import { RickMortyEffects } from './states/rickandmorty.effects';
 import { CharactersComponent } from './components/characters/characters.component';
+import { EpisodesComponent } from './components/episodes/episodes.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CharactersComponent } from './components/characters/characters.componen
     SidenavListComponent,
     DimensionsComponent,
     LocationsComponent,
-    CharactersComponent
+    CharactersComponent,
+    EpisodesComponent
   ],
   imports: [
     BrowserModule,

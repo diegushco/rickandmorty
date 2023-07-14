@@ -1,28 +1,21 @@
 <div fxLayout="row" fxLayoutAlign="center center">
-  <h1>List of Locations</h1>
+  <h1>List of Episodes</h1>
 </div>
 
 <mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-    <mat-cell *matCellDef="let location">{{ location.name }}</mat-cell>
+    <mat-cell *matCellDef="let episode">{{ episode.name }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="type">
-    <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-    <mat-cell *matCellDef="let location">{{ location.type }}</mat-cell>
+  <ng-container matColumnDef="air_date">
+    <mat-header-cell *matHeaderCellDef>Air Date</mat-header-cell>
+    <mat-cell *matCellDef="let episode">{{ episode.air_date }}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="dimension">
-    <mat-header-cell *matHeaderCellDef>Dimension</mat-header-cell>
-    <mat-cell *matCellDef="let location">{{ location.dimension }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="residents">
-    <mat-header-cell *matHeaderCellDef>Residents</mat-header-cell>
-    <mat-cell *matCellDef="let location"
-      ><span [matBadge]="location.residents.length"></span>
-    </mat-cell>
+  <ng-container matColumnDef="episode">
+    <mat-header-cell *matHeaderCellDef>Episode</mat-header-cell>
+    <mat-cell *matCellDef="let episode">{{ episode.episode }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="characters">
@@ -30,7 +23,7 @@
     <mat-cell *matCellDef="let element">
       <a
         [routerLink]="['/characters']"
-        [queryParams]="{ location: element.name }"
+        [queryParams]="{ episode: element.name }"
         >See</a
       >
     </mat-cell>

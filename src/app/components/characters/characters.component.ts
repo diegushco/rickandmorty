@@ -16,6 +16,7 @@ import { Observable, forkJoin } from 'rxjs';
 })
 export class CharactersComponent {
   location!: string;
+  episode!: string;
   characters$: Observable<ICharacter[]> = new Observable();
 
   constructor(
@@ -26,7 +27,7 @@ export class CharactersComponent {
 
   ngOnInit(): void {
     this.location = this.route.snapshot.queryParams['location'];
-
+    this.episode = this.route.snapshot.queryParams['episode'];
     console.log('EPA', this.location);
     if (this.location) {
       this.store
@@ -37,6 +38,23 @@ export class CharactersComponent {
             (st) => st.name === this.location
           );
           const characters = charactersSelected?.residents;
+          console.log('characters', characters);
+          const requests = characters?.map((endpoint) =>
+            this.rickAndMortyService.getEndpoint(endpoint)
+          );
+          if (requests) {
+            this.characters$ = forkJoin(requests);
+          }
+        });
+    }else if (this.episode) {
+      this.store
+        .select(fromRickMortySelector.getEpisodes)
+        .subscribe((episodes) => {
+          const eps = episodes?.find((ep) => ep.show);
+          const charactersSelected = eps?.results.find(
+            (ep) => ep.name === this.episode
+          );
+          const characters = charactersSelected?.characters;
           console.log('characters', characters);
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
