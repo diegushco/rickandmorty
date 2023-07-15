@@ -9,6 +9,8 @@ export enum RickMortyActionType {
   LoadCharacters = '[Characters] Load data',
   SetEpisodes = '[Episodes] Set episode of results from api',
   LoadEpisodes = '[Episodes] Load data',
+  LoadDimensions = '[Dimensions] Load data',
+  SetDimension = '[Dimensions] Set dimension selected',
 }
 
 export class SetLocationsAction implements Action {
@@ -61,6 +63,26 @@ export class LoadEpisodesAction implements Action {
   constructor(public payload: number) {}
 }
 
+export class LoadDimensionsAction implements Action {
+  readonly type = RickMortyActionType.LoadDimensions;
+
+  /**
+   * Constructor
+   * @param payload
+   */
+  constructor() {}
+}
+
+export class SetDimensionAction implements Action {
+  readonly type = RickMortyActionType.SetDimension;
+
+  /**
+   * Constructor
+   * @param payload
+   */
+  constructor(public payload: any) {}
+}
+
 /**
  * Export actions
  */
@@ -69,4 +91,6 @@ export type Actions =
   | SetLocationsAction
   | LoadCharactersAction
   | SetEpisodesAction
-  | LoadEpisodesAction;
+  | LoadEpisodesAction
+  | LoadDimensionsAction
+  | SetDimensionAction;

@@ -1,1 +1,47 @@
-<p>dimensions works!</p>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <h1>List of Dimensions</h1>
+</div>
+
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilter($event)"
+    placeholder="Ex. Post-Apocalyptic"
+    #input
+  />
+</mat-form-field>
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="dimension">
+    <mat-header-cell *matHeaderCellDef>Dimension</mat-header-cell>
+    <mat-cell *matCellDef="let dimension">{{ dimension.dimension }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="residents">
+    <mat-header-cell *matHeaderCellDef>Residents</mat-header-cell>
+    <mat-cell *matCellDef="let dimension"
+      ><span [matBadge]="dimension.residents.length"></span
+    ></mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+    <mat-cell *matCellDef="let dimension">{{ dimension.type }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="characters">
+    <mat-header-cell *matHeaderCellDef> Characters </mat-header-cell>
+    <mat-cell *matCellDef="let dimension">
+      <a (click)="goCharacters(dimension)">See</a>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+
+<mat-paginator
+  [pageSize]="20"
+  [pageSizeOptions]="[20, 50, 100]"
+  showFirstLastButtons
+></mat-paginator>

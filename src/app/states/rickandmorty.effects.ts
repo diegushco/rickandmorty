@@ -7,7 +7,7 @@ import {
   SetEpisodesAction,
   SetLocationsAction,
 } from './rickandmorty.actions';
-import { of, pipe } from 'rxjs';
+import { Observable, of, pipe } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromRickMortySelector from './rickandmorty.selectors';
 import { RickAndMortyService } from '../services/rickandmorty.service';
@@ -15,8 +15,8 @@ import { IEpisodesManage, ILocationManage } from './rickandmorty.reducer';
 
 @Injectable()
 export class RickMortyEffects {
-  private urlLocations = 'https://rickandmortyapi.com/api/location/?';
-
+  private urlLocations = 'https://rickandmortyapi.com/api/location?';
+  private dimensions!: any;
   constructor(
     private actions$: Actions,
     private store: Store,
@@ -34,6 +34,8 @@ export class RickMortyEffects {
         let locationShow = locations?.find((lct) =>
           lct.url.includes(pageMatch)
         );
+        console.log("buscare en", locations)
+        console.log("locationShow", locationShow)
         if (locationShow) {
           locationsStore = locationsStore.map((obj) => {
             if (obj.url === locationShow?.url) {
@@ -72,9 +74,7 @@ export class RickMortyEffects {
         const parametro: any = action;
         let episodesStore = episodes || [];
         const pageMatch = `page=${parametro.payload}`;
-        let episodesShow = episodes?.find((ep) =>
-          ep.url.includes(pageMatch)
-        );
+        let episodesShow = episodes?.find((ep) => ep.url.includes(pageMatch));
         if (episodesShow) {
           episodesStore = episodesStore.map((obj) => {
             if (obj.url === episodesShow?.url) {
@@ -104,4 +104,68 @@ export class RickMortyEffects {
       })
     )
   );
+
+  loadDimensions$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(RickMortyActionType.LoadDimensions),
+      withLatestFrom(this.store.select(fromRickMortySelector.getLocations)),
+      switchMap(([action, locations]) => {
+        this.dimensions = [];
+        const locationsTemp = locations ?? [];
+
+        return this.getDimensions(null, locationsTemp).pipe(
+            switchMap(allLocations => {
+              console.log('esto es all', allLocations);
+
+              const locationsToStore = allLocations.map((result:any) => {
+                const prevPageArr = result?.info?.prev?.split('page=');
+                const prevPage = (prevPageArr ? Number(prevPageArr[1]) : 0) + 1;
+                return {
+                    results: result.results,
+                    show: false,
+                    url: this.urlLocations + `page=${prevPage}`,
+                    info: result.info,
+                    page: prevPage,
+                  };
+              });
+              
+              return of(new SetLocationsAction(locationsToStore));
+            })
+          );
+      })
+    )
+  );
+
+  getDimensions(
+    url: string | null,
+    locationStore?: ILocationManage[]
+  ): Observable<Location[]> {
+    console.log('va', locationStore);
+    const locationShow = url
+      ? locationStore?.find((lct: any) => lct.url === url)
+      : locationStore?.find((lct: any) => lct.page === 1);
+
+    console.log('locationShow', locationShow);
+
+    const endpoint$ = locationShow
+      ? of(locationShow)
+      : url
+      ? this.rickAndMortyService.getEndpoint(url)
+      : this.rickAndMortyService.getEndpoint(
+          'https://rickandmortyapi.com/api/location?page=1'
+        );
+
+    return endpoint$.pipe(
+      switchMap((response: any) => {
+        
+
+        this.dimensions = this.dimensions.concat(
+          locationShow ?? response
+        );
+        return response.info.next
+          ? this.getDimensions(response.info.next, locationStore)
+          : of(this.dimensions);
+      })
+    );
+  }
 }

@@ -1,5 +1,10 @@
 import { RickMortyActionType } from './rickandmorty.actions';
-import { IEpisode, IInfo, ILocations } from '../services/rickandmorty.interface';
+import {
+  IDimension,
+  IEpisode,
+  IInfo,
+  ILocations,
+} from '../services/rickandmorty.interface';
 
 export interface ILocationManage {
   url: string;
@@ -23,6 +28,7 @@ export interface IEpisodesManage {
 export interface DataState {
   locations: ILocationManage[] | null;
   episodes: IEpisodesManage[] | null;
+  dimensionSelected: IDimension | null;
 }
 
 /**
@@ -31,6 +37,7 @@ export interface DataState {
 const initialState: DataState = {
   locations: null,
   episodes: null,
+  dimensionSelected: null,
 };
 
 /**
@@ -52,6 +59,11 @@ export function rickandMortyReducer(
       return {
         ...state,
         episodes: action.payload,
+      };
+    case RickMortyActionType.SetDimension:
+      return {
+        ...state,
+        dimensionSelected: action.payload,
       };
     default:
       return state;

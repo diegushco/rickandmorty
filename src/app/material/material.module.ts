@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [],
@@ -26,7 +27,8 @@ import { MatCardModule } from '@angular/material/card';
     MatTableModule,
     MatPaginatorModule,
     MatBadgeModule,
-    MatCardModule
+    MatCardModule,
+    MatInputModule
   ],
   exports: [
     MatTabsModule,
@@ -39,7 +41,8 @@ import { MatCardModule } from '@angular/material/card';
     MatTableModule,
     MatPaginatorModule,
     MatBadgeModule,
-    MatCardModule
+    MatCardModule,
+    MatInputModule
   ]
 })
 export class MaterialModule { }

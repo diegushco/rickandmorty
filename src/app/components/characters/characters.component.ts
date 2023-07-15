@@ -17,6 +17,7 @@ import { Observable, forkJoin } from 'rxjs';
 export class CharactersComponent {
   location!: string;
   episode!: string;
+  dimension!: string;
   characters$: Observable<ICharacter[]> = new Observable();
 
   constructor(
@@ -28,6 +29,7 @@ export class CharactersComponent {
   ngOnInit(): void {
     this.location = this.route.snapshot.queryParams['location'];
     this.episode = this.route.snapshot.queryParams['episode'];
+    this.dimension = this.route.snapshot.queryParams['dimension'];
     console.log('EPA', this.location);
     if (this.location) {
       this.store
@@ -63,8 +65,23 @@ export class CharactersComponent {
             this.characters$ = forkJoin(requests);
           }
         });
+    }else if (this.dimension) {
+      this.store
+        .select(fromRickMortySelector.getDimension)
+        .subscribe((dimensionSelected) => {
+          
+          const characters = dimensionSelected?.residents;
+          console.log('characters', characters);
+          const requests = characters?.map((endpoint) =>
+            this.rickAndMortyService.getEndpoint(endpoint)
+          );
+          if (requests) {
+            this.characters$ = forkJoin(requests);
+          }
+        });
     }
   }
+
 
   getStatusStyles(status: string) {
     let backgroundColor: string;

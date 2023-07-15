@@ -22,3 +22,12 @@ export const getEpisodes = createSelector(
   (state) => state.episodes
 );
 
+
+/**
+ * Creating selector for dimension selected
+ */
+export const getDimension = createSelector(
+    getRickMortyState,
+  (state) => state.dimensionSelected
+);
+

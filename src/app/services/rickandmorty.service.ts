@@ -9,6 +9,7 @@ import { IDataEpisodes, IDataLocation } from './rickandmorty.interface';
 export class RickAndMortyService {
 
   private apiUrl = 'https://rickandmortyapi.com/api';
+  private dimensions = [];
   
   constructor(private http: HttpClient) {}
 
@@ -32,6 +33,17 @@ export class RickAndMortyService {
     }
 
     return this.http.get<IDataEpisodes>(url);
+  }
+
+  getDimensions(url: string) {
+    this.getEndpoint(url).subscribe(response => {
+      this.dimensions = this.dimensions.concat(response.results);
+      if (response.info.next) {
+        this.getDimensions(response.info.next);
+      }else{
+        console.log("TODO:", this.dimensions)
+      }
+    });
   }
 
 }   

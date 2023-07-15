@@ -60,3 +60,10 @@ export interface IDataEpisodes {
   info: IInfo;
   results: IEpisode[];
 }
+
+export interface IDimension {
+  id:number,
+  dimension: string;
+  residents: string[];
+  type: string;
+}
