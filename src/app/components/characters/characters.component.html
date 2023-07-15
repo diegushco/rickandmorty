@@ -1,36 +1,49 @@
 <div *ngIf="characters$ | async as characters">
   <div fxLayout="row wrap" fxLayout.xs="column">
     <div fxFlex.gt-sm="33%" fxFlex="50%" *ngFor="let character of characters">
-      <mat-card style="margin: 1rem">
-        <mat-card-header>
-          <mat-card-title-group>
-            <mat-card-title>{{ character.name }}</mat-card-title>
-            <mat-card-subtitle>{{
-              character?.location?.name
-            }}</mat-card-subtitle>
-            <img mat-card-lg-image [src]="character.image" />
-          </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-content>
-          <mat-list role="list">
-            <mat-list-item role="listitem"
-              >Specie: {{ character.species }}</mat-list-item
-            >
-            <mat-list-item role="listitem"
-              >Gender: {{ character.gender }}</mat-list-item
-            >
-            <mat-list-item role="listitem"
-              >Last location: {{ character.location.name }}</mat-list-item
-            >
-            <mat-list-item role="listitem"
-              >Status: {{ character.status }} <span [ngStyle]="getStatusStyles(character.status)" class="status"></span> </mat-list-item
-            >
-            <mat-list-item role="listitem"
-              >Origin: {{ character?.origin?.name }}</mat-list-item
-            >
-          </mat-list>
-        </mat-card-content>
-      </mat-card>
+      <div
+        fxLayout="row wrap"
+        fxLayoutAlign="end center"
+        *ngIf="character?.error; else showData"
+      >
+        {{ character?.error }}
+      </div>
+      <ng-template #showData>
+        <mat-card class="mat-card">
+          <mat-card-header>
+            <mat-card-title-group>
+              <mat-card-title>{{ character.name }}</mat-card-title>
+              <mat-card-subtitle>{{
+                character?.location?.name
+              }}</mat-card-subtitle>
+              <img mat-card-lg-image [src]="character.image" />
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-list role="list">
+              <mat-list-item role="listitem"
+                >Specie: {{ character.species }}</mat-list-item
+              >
+              <mat-list-item role="listitem"
+                >Gender: {{ character.gender }}</mat-list-item
+              >
+              <mat-list-item role="listitem"
+                >Last location: {{ character.location.name }}</mat-list-item
+              >
+              <mat-list-item role="listitem"
+                >Status: {{ character.status }}
+                <span
+                  [ngStyle]="getStatusStyles(character.status)"
+                  class="status"
+                ></span>
+              </mat-list-item>
+              <mat-list-item role="listitem"
+                >Origin: {{ character?.origin?.name }}</mat-list-item
+              >
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
     </div>
   </div>
 </div>

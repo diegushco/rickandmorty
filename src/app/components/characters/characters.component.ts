@@ -7,7 +7,7 @@ import { ICharacter } from '../../services/rickandmorty.interface';
 import { Store } from '@ngrx/store';
 import { LoadCharactersAction } from '../../states/rickandmorty.actions';
 import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-characters',
@@ -18,7 +18,7 @@ export class CharactersComponent {
   location!: string;
   episode!: string;
   dimension!: string;
-  characters$: Observable<ICharacter[]> = new Observable();
+  characters$: Observable<ICharacter[] | any[]> = new Observable();
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +44,7 @@ export class CharactersComponent {
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
+          this.characters$ = of([{error:'There is not results'}])
           if (requests) {
             this.characters$ = forkJoin(requests);
           }
@@ -61,6 +62,7 @@ export class CharactersComponent {
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
+          this.characters$ = of([{error:'There is not results'}])
           if (requests) {
             this.characters$ = forkJoin(requests);
           }

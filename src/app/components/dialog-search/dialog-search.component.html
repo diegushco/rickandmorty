@@ -1,0 +1,32 @@
+<h2 mat-dialog-title *ngIf="data.episodeName">
+  Filter name by:{{ data.episodeName }}
+</h2>
+<mat-dialog-content class="mat-typography">
+  <div *ngIf="response$ | async as response">
+    <div *ngIf="response?.error; else showData">{{ response?.error }}</div>
+    
+    <ng-template #showData>
+      <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let episode">{{ episode.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="characters">
+          <mat-header-cell *matHeaderCellDef> Characters </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <a (click)="goCharacters(element.name)"
+              >See</a
+            >
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </ng-template>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

@@ -2,15 +2,18 @@
   <h1>List of Dimensions</h1>
 </div>
 
-<mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input
-    matInput
-    (keyup)="applyFilter($event)"
-    placeholder="Ex. Post-Apocalyptic"
-    #input
-  />
-</mat-form-field>
+<div fxLayout="row" fxLayoutAlign="center center">
+    <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. Post-Apocalyptic"
+          #input
+        />
+      </mat-form-field>
+</div>
+
 <mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="dimension">
     <mat-header-cell *matHeaderCellDef>Dimension</mat-header-cell>

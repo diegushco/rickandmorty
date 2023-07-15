@@ -4,6 +4,7 @@ import {
   Component,
   OnInit,
   ViewChild,
+  signal,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -11,6 +12,9 @@ import { IEpisode } from '../../services/rickandmorty.interface';
 import { Store } from '@ngrx/store';
 import { LoadEpisodesAction } from '../../states/rickandmorty.actions';
 import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
+import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogSearchComponent } from '../dialog-search/dialog-search.component';
 
 @Component({
   selector: 'app-episodes',
@@ -26,13 +30,16 @@ export class EpisodesComponent implements OnInit, AfterViewChecked {
   
   lengthPaginator = 0;
   indexPage = 0;
+  filterName: FormControl = new FormControl();
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private store: Store
+    private store: Store,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    
     this.dataSource.paginator = this.paginator;
     this.store.dispatch(new LoadEpisodesAction(1));
 
@@ -59,5 +66,16 @@ export class EpisodesComponent implements OnInit, AfterViewChecked {
       this.paginator.pageIndex = this.indexPage;
       this.cdr.detectChanges();
     }
+  }
+
+  search(){
+    const dialogRef = this.dialog.open(DialogSearchComponent,
+      {
+        data: { episodeName: this.filterName.value }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

@@ -26,6 +26,8 @@ import { reducers } from './states/reducers';
 import { RickMortyEffects } from './states/rickandmorty.effects';
 import { CharactersComponent } from './components/characters/characters.component';
 import { EpisodesComponent } from './components/episodes/episodes.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DialogSearchComponent } from './components/dialog-search/dialog-search.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { EpisodesComponent } from './components/episodes/episodes.component';
     DimensionsComponent,
     LocationsComponent,
     CharactersComponent,
-    EpisodesComponent
+    EpisodesComponent,
+    DialogSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { EpisodesComponent } from './components/episodes/episodes.component';
     FlexLayoutModule,
     RoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([RickMortyEffects]),
     StoreDevtoolsModule.instrument({

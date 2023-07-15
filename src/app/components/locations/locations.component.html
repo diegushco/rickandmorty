@@ -1,4 +1,23 @@
 <div fxLayout="row" fxLayoutAlign="center center">
+  <h1>Locations</h1>
+</div>
+<div class="panel-search" fxLayout="row" fxLayoutAlign="center center">
+  <mat-form-field class="group-field">
+    <input [formControl]="filterName" matInput type="search" />
+    <button
+      (click)="search()"
+      class="search"
+      mat-button
+      matSuffix
+      mat-stroked-button
+      aria-label="search"
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center">
   <h1>List of Locations</h1>
 </div>
 

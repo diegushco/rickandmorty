@@ -13,6 +13,9 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { LoadLocationsAction } from '../../states/rickandmorty.actions';
 import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
+import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { DialogSearchComponent } from '../dialog-search/dialog-search.component';
 
 @Component({
   selector: 'app-locations',
@@ -25,13 +28,14 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
     new MatTableDataSource<ILocations>();
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  
+  filterName: FormControl = new FormControl();
   lengthPaginator = 0;
   indexPage = 0;
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private store: Store
+    private store: Store,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -62,5 +66,16 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
       this.paginator.pageIndex = this.indexPage;
       this.cdr.detectChanges();
     }
+  }
+
+  search(){
+    const dialogRef = this.dialog.open(DialogSearchComponent,
+      {
+        data: { locationName: this.filterName.value }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
