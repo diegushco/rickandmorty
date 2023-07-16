@@ -15,13 +15,15 @@ import { IEpisodesManage, ILocationManage } from './rickandmorty.reducer';
 
 @Injectable()
 export class RickMortyEffects {
-  private urlLocations = 'https://rickandmortyapi.com/api/location?';
+  private urlLocations = '';
   private dimensions!: any;
   constructor(
     private actions$: Actions,
     private store: Store,
     private rickAndMortyService: RickAndMortyService
-  ) {}
+  ) {
+    this.urlLocations = rickAndMortyService.urlLocations;
+  }
 
   loadLocations$ = createEffect(() =>
     this.actions$.pipe(

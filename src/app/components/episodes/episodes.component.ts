@@ -15,13 +15,15 @@ import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSearchComponent } from '../dialog-search/dialog-search.component';
+import { Subscription } from 'rxjs';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-episodes',
   templateUrl: './episodes.component.html',
   styleUrls: ['./episodes.component.scss'],
 })
-export class EpisodesComponent implements OnInit, AfterViewChecked {
+export class EpisodesComponent implements OnInit, AfterViewChecked, OnDestroy {
   displayedColumns: string[] = [ 'name', 'air_date', 'episode', 'characters'];
   dataSource: MatTableDataSource<IEpisode> =
     new MatTableDataSource<IEpisode>();
@@ -31,19 +33,21 @@ export class EpisodesComponent implements OnInit, AfterViewChecked {
   lengthPaginator = 0;
   indexPage = 0;
   filterName: FormControl = new FormControl();
-
+  subscribeData = new Subscription();
+  
   constructor(
     private cdr: ChangeDetectorRef,
     private store: Store,
     public dialog: MatDialog
   ) {}
+  
 
   ngOnInit(): void {
     
     this.dataSource.paginator = this.paginator;
     this.store.dispatch(new LoadEpisodesAction(1));
 
-    this.store
+    this.subscribeData = this.store
       .select(fromRickMortySelector.getEpisodes)
       .subscribe((episodes) => {
         const results = episodes?.find((ep) => ep.show);
@@ -77,5 +81,9 @@ export class EpisodesComponent implements OnInit, AfterViewChecked {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscribeData.unsubscribe();
   }
 }

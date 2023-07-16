@@ -1,9 +1,15 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { RickAndMortyService } from '../../services/rickandmorty.service';
 import { Store } from '@ngrx/store';
 import { LoadDimensionsAction } from 'src/app/states/rickandmorty.actions';
 import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, Subscription, of, switchMap } from 'rxjs';
 import { IDimension } from '../../services/rickandmorty.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,10 +21,10 @@ import { Router } from '@angular/router';
   templateUrl: './dimensions.component.html',
   styleUrls: ['./dimensions.component.scss'],
 })
-export class DimensionsComponent implements OnInit, AfterViewInit {
+export class DimensionsComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['dimension', 'residents', 'type', 'characters'];
   dimensions: IDimension[] = [];
-
+  subscribeData = new Subscription();
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
@@ -27,7 +33,7 @@ export class DimensionsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.store.dispatch(new LoadDimensionsAction());
 
-    this.store
+    this.subscribeData = this.store
       .select(fromRickMortySelector.getLocations)
       .pipe(
         switchMap((arrResultLocations) => {
@@ -69,5 +75,9 @@ export class DimensionsComponent implements OnInit, AfterViewInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscribeData.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RickAndMortyService } from '../../services/rickandmorty.service';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,31 +7,34 @@ import { ICharacter } from '../../services/rickandmorty.interface';
 import { Store } from '@ngrx/store';
 import { LoadCharactersAction } from '../../states/rickandmorty.actions';
 import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, Subscription, forkJoin, of } from 'rxjs';
 
 @Component({
   selector: 'app-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
 })
-export class CharactersComponent {
+export class CharactersComponent implements OnDestroy{
   location!: string;
   episode!: string;
   dimension!: string;
-  characters$: Observable<ICharacter[] | any[]> = new Observable();
-
+  characters$: Observable<any[]> = new Observable();
+  subscribeGetData = new Subscription();
+  noData = false;
   constructor(
     private route: ActivatedRoute,
     private store: Store,
-    private rickAndMortyService: RickAndMortyService
+    private rickAndMortyService: RickAndMortyService,
   ) {}
+  
 
   ngOnInit(): void {
     this.location = this.route.snapshot.queryParams['location'];
     this.episode = this.route.snapshot.queryParams['episode'];
     this.dimension = this.route.snapshot.queryParams['dimension'];
+    this.noData = true;
     if (this.location) {
-      this.store
+      this.subscribeGetData = this.store
         .select(fromRickMortySelector.getLocations)
         .subscribe((locations) => {
           const sites = locations?.find((lct) => lct.show);
@@ -42,9 +45,10 @@ export class CharactersComponent {
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
-          this.characters$ = of([{ error: 'There is not results' }]);
-          if (requests) {
+          
+          if (requests && requests.length > 0) {
             this.characters$ = forkJoin(requests);
+            this.noData = false;
           }
         });
     } else if (this.episode) {
@@ -59,9 +63,10 @@ export class CharactersComponent {
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
-          this.characters$ = of([{ error: 'There is not results' }]);
-          if (requests) {
+          
+          if (requests && requests.length > 0) {
             this.characters$ = forkJoin(requests);
+            this.noData = false;
           }
         });
     } else if (this.dimension) {
@@ -72,8 +77,10 @@ export class CharactersComponent {
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
-          if (requests) {
+          
+          if (requests && requests.length > 0) {
             this.characters$ = forkJoin(requests);
+            this.noData = false;
           }
         });
     }
@@ -100,5 +107,9 @@ export class CharactersComponent {
     return {
       'background-color': backgroundColor,
     };
+  }
+
+  ngOnDestroy(): void {
+    this.subscribeGetData.unsubscribe();
   }
 }

@@ -9,6 +9,8 @@ import { IDataEpisodes, IDataLocation } from './rickandmorty.interface';
 export class RickAndMortyService {
 
   private apiUrl = 'https://rickandmortyapi.com/api';
+  public urlLocations = 'https://rickandmortyapi.com/api/location?';
+
   private dimensions = [];
   private episodes: IDataEpisodes[] = [];
   private locations: IDataLocation[] = [];

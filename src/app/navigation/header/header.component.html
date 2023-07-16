@@ -1,30 +1,31 @@
 <mat-toolbar color="primary">
-    <div fxHide.gt-xs>
-        <button mat-icon-button (click)="onToggleSidenav()">
-            <mat-icon>menu</mat-icon>
-        </button>
-    </div>
-    <div>
-        <a routerLink="/home">
-            <img class="logo" src="assets/images/icon.svg" alt="Logo Rick & Morty">
-        </a>
-    </div>
-    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-        <ul fxLayout fxLayoutGap="15px" class="navigation-items">
-            <li>
-                <a routerLink="/dimensions">Dimensions</a>
-            </li>
-            <li>
-                <a routerLink="/locations">Locations</a>
-            </li>
-            <li>
-                <a routerLink="/episodes">Episodes</a>
-            </li>
-        </ul>
-    </div>
-    <div >
-        <button mat-icon-button (click)="toggleDarkMode()">
-            <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
-          </button>
-    </div>
-  </mat-toolbar>
+  <div fxFlex fxHide.gt-xs>
+    <button mat-icon-button (click)="onToggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div fxFlex>
+    <a routerLink="/home">
+      <img class="logo" src="assets/images/icon.svg" alt="Logo Rick & Morty" />
+    </a>
+  </div>
+  <div fxFlex fxLayout fxLayoutAlign="end center" fxHide.xs>
+    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+      <li>
+        <a routerLink="/dimensions">Dimensions</a>
+      </li>
+      <li>
+        <a routerLink="/locations">Locations</a>
+      </li>
+      <li>
+        <a routerLink="/episodes">Episodes</a>
+      </li>
+    </ul>
+  </div>
+  <div fxLayout fxLayoutAlign="end center">
+    <div fxFlex></div>
+    <button mat-icon-button (click)="toggleDarkMode()">
+      <mat-icon>{{ isDarkMode ? "light_mode" : "dark_mode" }}</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

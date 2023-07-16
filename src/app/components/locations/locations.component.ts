@@ -19,13 +19,14 @@ import * as fromRickMortySelector from './../../states/rickandmorty.selectors';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { DialogSearchComponent } from '../dialog-search/dialog-search.component';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-locations',
   templateUrl: './locations.component.html',
   styleUrls: ['./locations.component.scss'],
 })
-export class LocationsComponent implements OnInit, AfterViewChecked {
+export class LocationsComponent implements OnInit, AfterViewChecked, OnDestroy {
   displayedColumns: string[] = [ 'name', 'type', 'dimension', 'residents', 'characters'];
   dataSource: MatTableDataSource<ILocations> =
     new MatTableDataSource<ILocations>();
@@ -34,6 +35,7 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
   filterName: FormControl = new FormControl();
   lengthPaginator = 0;
   indexPage = 0;
+  subscribeData = new Subscription();
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -42,12 +44,12 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
   ) {
     
   }
-
+  
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.store.dispatch(new LoadLocationsAction(1));
 
-    this.store
+    this.subscribeData = this.store
       .select(fromRickMortySelector.getLocations)
       .subscribe((locations) => {
         const results = locations?.find((lct) => lct.show);
@@ -82,4 +84,9 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
       console.log(`Dialog result: ${result}`);
     });
   }
+
+  ngOnDestroy(): void {
+    this.subscribeData.unsubscribe();
+  }
+
 }
