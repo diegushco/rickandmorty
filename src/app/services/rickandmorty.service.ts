@@ -42,8 +42,6 @@ export class RickAndMortyService {
       this.dimensions = this.dimensions.concat(response.results);
       if (response.info.next) {
         this.getDimensions(response.info.next);
-      }else{
-        console.log("TODO:", this.dimensions)
       }
     });
   }

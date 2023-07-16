@@ -30,7 +30,6 @@ export class CharactersComponent {
     this.location = this.route.snapshot.queryParams['location'];
     this.episode = this.route.snapshot.queryParams['episode'];
     this.dimension = this.route.snapshot.queryParams['dimension'];
-    console.log('EPA', this.location);
     if (this.location) {
       this.store
         .select(fromRickMortySelector.getLocations)
@@ -40,16 +39,15 @@ export class CharactersComponent {
             (st) => st.name === this.location
           );
           const characters = charactersSelected?.residents;
-          console.log('characters', characters);
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
-          this.characters$ = of([{error:'There is not results'}])
+          this.characters$ = of([{ error: 'There is not results' }]);
           if (requests) {
             this.characters$ = forkJoin(requests);
           }
         });
-    }else if (this.episode) {
+    } else if (this.episode) {
       this.store
         .select(fromRickMortySelector.getEpisodes)
         .subscribe((episodes) => {
@@ -58,22 +56,19 @@ export class CharactersComponent {
             (ep) => ep.name === this.episode
           );
           const characters = charactersSelected?.characters;
-          console.log('characters', characters);
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
-          this.characters$ = of([{error:'There is not results'}])
+          this.characters$ = of([{ error: 'There is not results' }]);
           if (requests) {
             this.characters$ = forkJoin(requests);
           }
         });
-    }else if (this.dimension) {
+    } else if (this.dimension) {
       this.store
         .select(fromRickMortySelector.getDimension)
         .subscribe((dimensionSelected) => {
-          
           const characters = dimensionSelected?.residents;
-          console.log('characters', characters);
           const requests = characters?.map((endpoint) =>
             this.rickAndMortyService.getEndpoint(endpoint)
           );
@@ -83,7 +78,6 @@ export class CharactersComponent {
         });
     }
   }
-
 
   getStatusStyles(status: string) {
     let backgroundColor: string;

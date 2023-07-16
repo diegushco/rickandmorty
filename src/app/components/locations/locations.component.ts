@@ -2,7 +2,10 @@ import {
   AfterViewChecked,
   ChangeDetectorRef,
   Component,
+  Inject,
+  Injector,
   OnInit,
+  Optional,
   ViewChild,
 } from '@angular/core';
 import { RickAndMortyService } from '../../services/rickandmorty.service';
@@ -36,7 +39,9 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
     private cdr: ChangeDetectorRef,
     private store: Store,
     public dialog: MatDialog
-  ) {}
+  ) {
+    
+  }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -46,7 +51,6 @@ export class LocationsComponent implements OnInit, AfterViewChecked {
       .select(fromRickMortySelector.getLocations)
       .subscribe((locations) => {
         const results = locations?.find((lct) => lct.show);
-        console.log("results", results)
         this.dataSource.data = results?.results ?? [];
         this.paginator.length = results?.info.count;
         this.lengthPaginator = results?.info.count ?? 0;

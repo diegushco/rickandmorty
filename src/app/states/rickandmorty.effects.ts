@@ -34,8 +34,6 @@ export class RickMortyEffects {
         let locationShow = locations?.find((lct) =>
           lct.url.includes(pageMatch)
         );
-        console.log("buscare en", locations)
-        console.log("locationShow", locationShow)
         if (locationShow) {
           locationsStore = locationsStore.map((obj) => {
             if (obj.url === locationShow?.url) {
@@ -115,8 +113,6 @@ export class RickMortyEffects {
 
         return this.getDimensions(null, locationsTemp).pipe(
             switchMap(allLocations => {
-              console.log('esto es all', allLocations);
-
               const locationsToStore = allLocations.map((result:any) => {
                 const prevPageArr = result?.info?.prev?.split('page=');
                 const prevPage = (prevPageArr ? Number(prevPageArr[1]) : 0) + 1;
@@ -140,12 +136,9 @@ export class RickMortyEffects {
     url: string | null,
     locationStore?: ILocationManage[]
   ): Observable<Location[]> {
-    console.log('va', locationStore);
     const locationShow = url
       ? locationStore?.find((lct: any) => lct.url === url)
       : locationStore?.find((lct: any) => lct.page === 1);
-
-    console.log('locationShow', locationShow);
 
     const endpoint$ = locationShow
       ? of(locationShow)
